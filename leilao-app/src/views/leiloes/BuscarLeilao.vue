@@ -2,6 +2,7 @@
   <v-dialog
     v-model="showDialog"
     max-width="750px"
+    persistent
   >
     <v-card>
       <v-container>
@@ -10,6 +11,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-rename-box-outline"
                 label="Nome do leilão"
                 v-model="descricao"
                 clearable
@@ -18,6 +20,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-format-color-highlight"
                 v-model="codigo"
                 label="Código"
                 clearable
@@ -26,6 +29,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-account-search"
                 v-model="vendedor"
                 label="E-mail"
                 clearable
@@ -33,13 +37,33 @@
               />
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-mask="'(##) #####-####'"
-                v-model="inicioPrevisto"
-                label="Início Previsto"
-                clearable
-                outlined
-              />
+              <v-menu
+                offset-y
+                ref="menu"
+                v-model="menu"
+                max-width="290px"
+                min-width="auto"
+                transition="scale-transition"
+                :close-on-content-click="false"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-on="on"
+                    outlined
+                    v-bind="attrs"
+                    v-model="dateFormated"
+                    label="Inicio previsto"
+                    prepend-icon="mdi-calendar"
+                    hint="Selecione a data de início do leilão"
+                  />
+                </template>
+                <v-date-picker
+                  no-title
+                  format="dd/MM/yyyy"
+                  v-model="dataPrevista"
+                  @input="menu = false"
+                />
+              </v-menu>
             </v-col>
           </v-row>
         </v-card-text>
@@ -71,6 +95,7 @@
 
 <script>
 import deleteEmptyValues from '../../util/prepareObject';
+import { formatDateToRequest, formatdate } from '../../util/DateUtil';
 
 export default {
   name: 'BuscarLeilao',
@@ -78,10 +103,14 @@ export default {
   data() {
     return {
       codigo: '',
+      menu: false,
       vendedor: '',
-      inicioPrevisto: '',
       descricao: '',
+      dataPrevista: '',
+      inicioPrevisto: '',
       deleteEmptyValues,
+      formatDateToRequest,
+      formatdate,
     };
   },
 
@@ -90,6 +119,17 @@ export default {
       type: Boolean,
       default: false,
       required: true,
+    }
+  },
+  computed: {
+  dateFormated() {
+      return this.dataPrevista ? formatdate(this.dataPrevista) : '';
+    }
+  },
+
+  watch: {
+    'dataPrevista': function (val) {
+      formatdate(val);
     }
   },
 
@@ -103,7 +143,7 @@ export default {
       const params = this.deleteEmptyValues({
         codigo: this.codigo,
         vendedor: this.vendedor,
-        inicioPrevisto: this.inicioPrevisto,
+        inicioPrevisto: formatDateToRequest(this.dataPrevista),
         descricao: this.descricao,
       });
       this.$router.push({
@@ -112,7 +152,7 @@ export default {
       .then(() => {
         this.clearFields();
         this.$emit('onSearch');
-      });
+      })
     },
 
     clearFields() {

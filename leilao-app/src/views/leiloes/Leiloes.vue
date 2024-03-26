@@ -19,7 +19,7 @@
       v-if="showDialog"
       ref="BuscarLeilao"
       :showDialog="showDialog"
-      @onSearch="fetchLeiloes"
+      @onSearch="onSearchDialog"
       @closeDialog="showDialog = false"
     />
 
@@ -131,11 +131,17 @@ export default {
         .then(() => {
           this.dialogDelete = false;
           this.fetchLeiloes();
+          this.key += 1;
         })
     },
 
     onSearch() {
       this.showDialog = true;
+    },
+
+    onSearchDialog() {
+      this.showDialog = false;
+      this.fetchLeiloes();
     },
   },
 }

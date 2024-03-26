@@ -14,7 +14,7 @@
           elevation="5"
           @click="navigateTo(routeGrid[index])"
         >
-          <v-card-title>{{ title }}</v-card-title>
+          <v-card-title class="title-grid">{{ title }}</v-card-title>
         </v-card>
       </v-col>
     </v-row>
@@ -50,7 +50,13 @@ export default {
 .menu-card {
   cursor: pointer;
   margin: 10px;
-  padding: 40px;
+  padding: 45px;
   text-align: center;
+}
+
+.title-grid {
+  color: #0F1D38;
+  font-size: 30px;
+  font-weight: bold;
 }
 </style>

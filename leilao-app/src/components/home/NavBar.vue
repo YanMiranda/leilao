@@ -12,6 +12,7 @@
 
     <v-btn
       text
+      :x-small="isMobile"
       to="/unidades"
       class="nav-item"
     >
@@ -19,6 +20,7 @@
     </v-btn>
     <v-btn
       text
+      :x-small="isMobile"
       to="/empresas"
       class="nav-item"
     >
@@ -26,6 +28,7 @@
     </v-btn>
     <v-btn
       text
+      :x-small="isMobile"
       to="/leiloes"
       class="nav-item"
     >

@@ -2,6 +2,7 @@
   <v-dialog
     v-model="showDialog"
     max-width="750px"
+    persistent
   >
     <v-card>
       <v-card-title class="text-h5">Buscar Empresa</v-card-title>
@@ -10,6 +11,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-rename-box-outline"
                 v-model="razaoSocial"
                 label="Nome da empresa"
                 clearable
@@ -18,6 +20,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-id-card"
                 v-mask="'##.###.###/####-##'"
                 v-model="cnpj"
                 label="CNPJ"
@@ -27,6 +30,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-email-check-outline"
                 v-model="email"
                 label="E-mail"
                 clearable
@@ -35,6 +39,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                prepend-icon="mdi-phone-check-outline"
                 v-mask="'(##) #####-####'"
                 v-model="telefone"
                 label="Telefone"
@@ -102,9 +107,9 @@ export default {
 
     onSearch() {
       const params = this.deleteEmptyValues({
-        cnpj: this.cnpj,
+        cnpj: this.cnpj.replace(/[^\d]+/g, ''),
         email: this.email,
-        telefone: this.telefone,
+        telefone: this.telefone.replace(/[^\d]+/g, ''),
         razaoSocial: this.razaoSocial,
       });
       this.$router.push({

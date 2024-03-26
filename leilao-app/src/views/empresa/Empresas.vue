@@ -19,7 +19,7 @@
       v-if="showDialog"
       ref="BuscarEmpresa"
       :showDialog="showDialog"
-      @onSearch="fetchEmpresas"
+      @onSearch="onSearchDialog"
       @closeDialog="showDialog = false"
     />
 
@@ -122,6 +122,7 @@ export default {
         .then(() => {
           this.dialogDelete = false;
           this.fetchEmpresas();
+          this.key += 1;
         });
     },
 
@@ -131,6 +132,11 @@ export default {
 
     onSearch() {
       this.showDialog = true;
+    },
+
+    onSearchDialog() {
+      this.showDialog = false;
+      this.fetchEmpresas();
     },
   },
 };

@@ -51,20 +51,7 @@ public class LeilaoBO {
         CriteriaQuery<Leilao> query = cb.createQuery(Leilao.class);
         Root<Leilao> root = query.from(Leilao.class);
 
-        Predicate predicate = cb.conjunction();
-
-        if (codigo != null) {
-            predicate = cb.and(predicate, cb.equal(root.get("codigo"), codigo));
-        }
-        if (descricao != null && !descricao.isEmpty()) {
-            predicate = cb.and(predicate, cb.equal(root.get("descricao"), descricao));
-        }
-        if (vendedor != null) {
-            predicate = cb.and(predicate, cb.equal(root.get("vendedor"), vendedor));
-        }
-        if (inicioPrevisto != null) {
-            predicate = cb.and(predicate, cb.equal(root.get("inicioPrevisto"), inicioPrevisto));
-        }
+        Predicate predicate = buildPredicate(cb, root, codigo, descricao, vendedor, inicioPrevisto);
 
         query.where(predicate);
 
@@ -84,6 +71,14 @@ public class LeilaoBO {
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<Leilao> root = query.from(Leilao.class);
 
+        Predicate predicate = buildPredicate(cb, root, codigo, descricao, vendedor, inicioPrevisto);
+
+        query.select(cb.count(root)).where(predicate);
+
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    private Predicate buildPredicate(CriteriaBuilder cb, Root<Leilao> root, Integer codigo, String descricao, Integer vendedor, Date inicioPrevisto) {
         Predicate predicate = cb.conjunction();
 
         if (codigo != null) {
@@ -99,8 +94,6 @@ public class LeilaoBO {
             predicate = cb.and(predicate, cb.equal(root.get("inicioPrevisto"), inicioPrevisto));
         }
 
-        query.select(cb.count(root)).where(predicate);
-
-        return entityManager.createQuery(query).getSingleResult();
+        return predicate;
     }
 }

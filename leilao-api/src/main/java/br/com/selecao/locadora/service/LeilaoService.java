@@ -65,7 +65,7 @@ public class LeilaoService {
             @RequestParam(required = false) Integer codigo,
             @RequestParam(required = false) String descricao,
             @RequestParam(required = false) Integer vendedor,
-            @RequestParam(required = false) Date inicioPrevisto
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX") Date inicioPrevisto
     ) {
         return new ResponseEntity<>(leilaoBO.buscarPorFiltro(pagination, codigo, descricao, vendedor, inicioPrevisto), HttpStatus.OK);
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid ">
+  <div class="container-fluid">
     <div class="elevation-2" style="border-radius: 10px;">
       <v-data-table
         :sort-by="pagination.sortBy"
@@ -13,16 +13,17 @@
       >
         <template v-slot:top>
           <v-toolbar flat class="pa-5">
-            <v-toolbar-title class="title-table">{{ title }}</v-toolbar-title>
+            <v-toolbar-title :class="(isMobile) ? 'text-h4' : 'title-table'">{{ title }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
               outlined
               elevation="2"
               color="success"
+              :small="isMobile"
               @click="createItem"
             >
               <v-icon small>mdi-plus</v-icon>
-              Adicionar
+              {{ isMobile ? '' : Adicionar }}
             </v-btn>
             <v-btn
               v-if="showSeachButton"
@@ -30,10 +31,11 @@
               class="ml-2"
               elevation="2"
               color="primary"
+              :small="isMobile"
               @click="serachItem"
             >
               <v-icon small>mdi-magnify</v-icon>
-              Buscar
+              {{ isMobile ? '' : Buscar }}
             </v-btn>
           </v-toolbar>
           <v-divider></v-divider>
@@ -166,5 +168,9 @@ export default {
   color: #138496;
   margin-top: 20px;
   font-size: xx-large;
+}
+
+.text-h4 {
+  color: #138496;
 }
 </style>

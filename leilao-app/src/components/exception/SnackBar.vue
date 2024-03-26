@@ -35,7 +35,6 @@ export default {
 
   methods: {
     init(msg, cor) {
-      console.log('init');
       this.snackbar = true;
       this.mensagem = msg;
       this.cor = cor;

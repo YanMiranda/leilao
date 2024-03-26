@@ -51,20 +51,7 @@ public class EmpresaBO {
         CriteriaQuery<Empresa> query = cb.createQuery(Empresa.class);
         Root<Empresa> root = query.from(Empresa.class);
 
-        Predicate predicate = cb.conjunction();
-
-        if (razaoSocial != null && !razaoSocial.isEmpty()) {
-            predicate = cb.and(predicate, cb.equal(root.get("razaoSocial"), razaoSocial));
-        }
-        if (cnpj != null && !cnpj.isEmpty()) {
-            predicate = cb.and(predicate, cb.equal(root.get("cnpj"), cnpj));
-        }
-        if (telefone != null && !telefone.isEmpty()) {
-            predicate = cb.and(predicate, cb.equal(root.get("telefone"), telefone));
-        }
-        if (email != null && !email.isEmpty()) {
-            predicate = cb.and(predicate, cb.equal(root.get("email"), email));
-        }
+        Predicate predicate = buildPredicate(cb, root, razaoSocial, cnpj, telefone, email);
 
         query.where(predicate);
 
@@ -84,6 +71,14 @@ public class EmpresaBO {
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<Empresa> root = query.from(Empresa.class);
 
+        Predicate predicate = buildPredicate(cb, root, razaoSocial, cnpj, telefone, email);
+
+        query.select(cb.count(root)).where(predicate);
+
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    private Predicate buildPredicate(CriteriaBuilder cb, Root<Empresa> root, String razaoSocial, String cnpj, String telefone, String email) {
         Predicate predicate = cb.conjunction();
 
         if (razaoSocial != null && !razaoSocial.isEmpty()) {
@@ -99,8 +94,6 @@ public class EmpresaBO {
             predicate = cb.and(predicate, cb.equal(root.get("email"), email));
         }
 
-        query.select(cb.count(root)).where(predicate);
-
-        return entityManager.createQuery(query).getSingleResult();
+        return predicate;
     }
 }

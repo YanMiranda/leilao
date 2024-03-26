@@ -35,6 +35,7 @@ leilao-api/.project
 leilao-api/.settings
 leilao-api/.springBeans
 leilao-api/.sts4-cache
+leilao-api/*.log
 
 ### IntelliJ IDEA ###
 leilao-api/*.iws

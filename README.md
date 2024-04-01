@@ -7,7 +7,7 @@ API + Aplicação web para leilão
 Certifique-se de definir a porta do servidor e as credenciais de acesso do banco de dados. Utilize o comando abaixo para criar o banco de dados:
 
 ```
-crente database leiloes
+create database leiloes
 ```
 
 O Flyway cuidará do restante, garantindo a migração e versionamento adequados do banco de dados.
